@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<p id="show"></p>
+	<script>
+		var show = document.getElementById("show");
+		var $table, $tr, $td, $text;
+		var xhtp = new XMLHttpRequest();
+		xhtp.onreadystatechange = function () {
+			if (xhtp.readyState == 4 && xhtp.status == 200) {
+				console.log(xhtp.responseText);
+				var datas = JSON.parse(xhtp.responseText);
+				$table = document.createElement("table");
+				$table.setAttribute("border", 1);
+				datas.forEach(function (a) {
+					$tr = document.createElement("tr");
+					for (f in a) {
+						$text = document.createTextNode(a[f]);
+						$td = document.createElement("td");
+						$td.appendChild($text);
+						$tr.appendChild($td);
+					}
+					$table.appendChild($tr);
+				});
+				show.appendChild($table);
+			}
+		}
+		xhtp.open("get", "../GetBoardListServlet", true);
+		xhtp.send();
+
+
+
+	</script>
+</body>
+
+</html>

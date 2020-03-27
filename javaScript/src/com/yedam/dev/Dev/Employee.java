@@ -1,4 +1,4 @@
-package com.yedam.dev;
+package com.yedam.dev.Dev;
 
 public class Employee {
 	int employeeId;
