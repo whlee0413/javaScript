@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
-import com.yedam.dev.Dev.EmpDAO;
-import com.yedam.dev.Dev.Employee;
+import com.yedam.board.BoardDAO;
+import com.yedam.board.Board;
 
 import net.sf.json.JSONArray;
 
@@ -33,12 +33,13 @@ public class GetBoardListServlet extends HttpServlet {
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		JSONObject obj = new JSONObject();
 		JSONArray ary = new JSONArray();
-		EmpDAO dao = new EmpDAO();
+		BoardDAO dao = new BoardDAO();
 		
-	      for (Employee e : dao.getEmpList()) {
-	         obj.put("empId", e.getEmployeeId());
-	         obj.put("firstname", e.getFirstName());
-	         obj.put("lastname", e.getLastName());
+	      for (Board b : dao.getBoardList()) {
+	         obj.put("boardNo", b.getBoardNo());
+	         obj.put("content", b.getContent());
+	         obj.put("writer", b.getWriter());
+	         obj.put("date", b.getDate());
 	         ary.add(obj);
 	      }
 	      

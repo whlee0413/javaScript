@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/InsertBoaredServlet")
-public class InsertBoaredServlet extends HttpServlet {
+@WebServlet("/InsertBoardServlet")
+public class InsertBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public InsertBoaredServlet() {
+    public InsertBoardServlet() {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 

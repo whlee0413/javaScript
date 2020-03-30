@@ -6,19 +6,19 @@ public class BoardMain {
 
 	public static void main(String[] args) {
 
-		BoardDAO e = new BoardDAO();
-//		List<Board> elist = e.getBoardList();
-//		for (Board brd : elist) {
-//			System.out.println(brd);
-//		}
-//		
-//		Board board = new Board();
-//		board.setWriter("user1");
-//		board.setContent("java test");
-//
-//		e.insertBoard(board);
+		BoardDAO b = new BoardDAO();
+		List<Board> blist = b.getBoardList();
+		for (Board brd : blist) {
+			System.out.println(brd);
+		}
 		
-		Board brd = e.getBoardInfo(1);
+		Board board = new Board();
+		board.setWriter("user1");
+		board.setContent("java test");
+
+		b.insertBoard(board);
+		
+		Board brd = b.getBoardInfo(1);
 		System.out.println(brd);
 		
 		

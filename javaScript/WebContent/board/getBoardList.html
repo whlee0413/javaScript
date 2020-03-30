@@ -1,42 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Board</title>
 </head>
 
 <body>
-	<p id="show"></p>
-	<script>
-		var show = document.getElementById("show");
-		var $table, $tr, $td, $text;
-		var xhtp = new XMLHttpRequest();
-		xhtp.onreadystatechange = function () {
-			if (xhtp.readyState == 4 && xhtp.status == 200) {
-				console.log(xhtp.responseText);
-				var datas = JSON.parse(xhtp.responseText);
-				$table = document.createElement("table");
-				$table.setAttribute("border", 1);
-				datas.forEach(function (a) {
-					$tr = document.createElement("tr");
-					for (f in a) {
-						$text = document.createTextNode(a[f]);
-						$td = document.createElement("td");
-						$td.appendChild($text);
-						$tr.appendChild($td);
-					}
-					$table.appendChild($tr);
-				});
-				show.appendChild($table);
-			}
-		}
-		xhtp.open("get", "../GetBoardListServlet", true);
-		xhtp.send();
+   Content: <input type="text" name="" id="content"><br>
+   Writer: <input type="text" name="" id="writer"><br>
+   <button onclick="insertBoardFunc()">입력</button>
+   <p id="show"></p>
+   <script>
+      var show = document.getElementById("show");
+      var $table, $tr, $td, $text;
+      var xhtp = new XMLHttpRequest();
+      xhtp.onreadystatechange = function () {
+         if (xhtp.readyState == 4 && xhtp.status == 200) {
+            var datas = JSON.parse(xhtp.responseText);
+            console.log(xhtp.responseText);
+            $title = ["boardNo", "content", "writer", "date"]
+            $table = document.createElement("table");
+            $table.setAttribute("border", 1);
+            datas.forEach(function (o) {
+               $tr = document.createElement("tr");
+               $title.forEach(function (f) {
+                  var isNull = o[f];  // undefined 라고 뜨는 것을 "X" 문구로 바꾸는 코드
+                  if (!isNull) {
+                     isNull = "X";
+                  }               // 여기까지
+                  $text = document.createTextNode(isNull);
+                  $td = document.createElement("td");
+                  if (f == "boardNo") { // boardNo에 A태그(하이퍼링크) 다는 명령어.
+                     var $a = document.createElement("a");
+                     $a.setAttribute("href", "getBoard.jsp?boardNo=" + o[f]);
+                     $a.innerHTML = o[f];
+                     $td.appendChild($a);
+                  } else {
+                     $td.appendChild($text); //A태그(boardNo) 제외한 나머지 필드 안의 데이터들은 출력이 되게 하기 위함.
+                  }
+                  $tr.appendChild($td);
+               })
+               $table.appendChild($tr);
+            });
+            show.appendChild($table);
+         }
+      }
+      xhtp.open("get", "../GetBoardListServlet", true);
+      xhtp.send();
 
-
-
-	</script>
+      function insertBoardFunc() {
+         var cont = document.getElementById('content').value;
+         var wri = document.getElementById('writer').value;
+         var xhtp = new XMLHttpRequest();
+         xhtp.onreadystatechange = function () {
+            console.log(xhtp.responseText);
+         }
+         xhtp.open("post", "../InsertBoardServlet", true);
+         xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+         xhtp.send("content=" + cont + "&writer=" + wri);
+      }
+   </script>
 </body>
 
 </html>
