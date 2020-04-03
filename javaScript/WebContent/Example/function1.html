@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>function1.html</title>
+    <script src="function1.js"></script>
+    <script src="function2.js"></script>
+    <script src="function3.js"></script>
+
+
+</head>
+
+
+<body>
+    <div id="galleryZone">
+        <p><img id="photo" width="200px" height="100px" src="../images/images1.jpg"></p>
+        <p><button onclick="gallery(0)">이전</button></p>
+        <p><button onclick="gallery(1)">다음</button></p>
+
+    </div>
+    <script>
+        var photoElement = document.getElementById('photo');
+        console.log(photoElement);
+        var fnc = "function";
+        // console.log(fnc());
+        function func1() {
+            return 10 + 20;
+        }
+        var fnc1 = function(num1,num2){
+            return num1 + num2;
+        }
+
+        console.log(fnc1(10,20));
+        function func3(){
+            // console.log(arguments.length);
+            var sum=0;
+            for(var i=0; i<arguments.length; i++){
+                sum += arguments[i];
+            }
+            return sum;
+            console.log("after return"); //실행 안되는 이유: return에서 끝내버림.
+        }
+        var sum = func3(1,2,3,4,5); 
+        console.log("합계: "+ sum);
+
+    </script>
+</body>
+
+</html>
