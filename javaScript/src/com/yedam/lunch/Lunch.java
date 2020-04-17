@@ -1,4 +1,4 @@
-package study;
+package com.yedam.lunch;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,40 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Employee {
-	private String firstName;
-	private int salary;
+class Menu {
+	private String food;
 
-	public Employee() {
+	public String getFood() {
+		return food;
 	}
 
-	public Employee(String firstName, int salary) {
-		super();
-		this.firstName = firstName;
-		this.salary = salary;
+	public void setFood(String food) {
+		this.food = food;
 	}
+	
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public int getSalary() {
-		return salary;
-	}
-
-	public void setSalary(int salary) {
-		this.salary = salary;
-	}
 
 }
 
-public class ScannerExample {
+public class Lunch {
 
-	static List<Employee> list = new ArrayList<>();
+	static List<Menu> list = new ArrayList<>();
 
 	public static Connection getConnection() {
 		Connection conn = null;
@@ -59,13 +43,13 @@ public class ScannerExample {
 		return conn;
 	}
 
-	public static void inputEmp(Employee emp) {
+	public static void inputEmp(Menu men) {
 		Connection con = getConnection();
 		String sql = "insert into emps values(?,?)";
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, emp.getFirstName());
-			pstmt.setInt(2, emp.getSalary());
+			pstmt.setString(1, men.getFood());
+			
 			int r = pstmt.executeUpdate();
 			System.out.println(r + "건 입력됨.");
 		} catch (SQLException e) {
@@ -76,16 +60,15 @@ public class ScannerExample {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// list.add(emp);
 	}
 	
-	public static void deleteEmp(String name) {
+	public static void deleteMen(String menu) {
 		Connection con = getConnection();
 		String sql = "delete from emps where first_name =?";
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, name);
+			pstmt.setString(1, menu);
 			pstmt.executeUpdate();
 			System.out.println("삭제됨.");
 		} catch (SQLException e) {
@@ -96,15 +79,15 @@ public class ScannerExample {
 	
 	
 
-	public static List<Employee> getEmpList() {
+	public static List<Menu> getEmpList() {
 		Connection con = getConnection();
 		String sql = "select first_name, salary from emps";
-		List<Employee> list = new ArrayList<>();
+		List<Menu> list = new ArrayList<>();
 		try {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				list.add(new Employee(rs.getString("first_name"),rs.getInt("salary")));
+				list.add(new Menu());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,9 +97,8 @@ public class ScannerExample {
 	}
 
 	public static void main(String[] args) {
-		Employee emp = new Employee("Hwang", 1000);
-		list.add(emp);
-		list.add(new Employee("Hwang", 2000));
+		Menu men = new Menu();
+		list.add(men);
 
 		Scanner scn = new Scanner(System.in);
 		int menu;
@@ -130,15 +112,15 @@ public class ScannerExample {
 				String name = scn.nextLine();
 				System.out.println("연봉입력: ");
 				int salary = scn.nextInt();
-				Employee emps = new Employee(name, salary);
-				inputEmp(emps); // 한건 입력 처리.
+				Menu Menu = new Menu();
+				inputEmp(Menu); // 한건 입력 처리.
 
 			} else if (menu == 2) {
-				List<Employee> returnList = getEmpList();
+				List<Menu> returnList = getEmpList();
 				double num = Math.random()*5;
 				
 				
-				for (Employee emps : returnList)
+				for (Menu emps : returnList)
 					System.out.println(emps.getFirstName()+ ", " +emps.getSalary());
 					System.out.println(returnList.get((int) num).getFirstName());
 			} else if (menu == 3) {
