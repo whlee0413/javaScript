@@ -1,4 +1,4 @@
-package co.yedam.app.view;
+package view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,8 +28,18 @@ public class MainController implements Initializable {
 	@FXML
 	public void empView(ActionEvent event) {
 		try {
-			BorderPane empView = FXMLLoader.load(getClass().getResource("main.fxml"));
+			BorderPane empView = FXMLLoader.load(getClass().getResource("pick.fxml"));
 			rootLayout.setCenter(empView);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void regiView(ActionEvent event) {
+		try {
+			BorderPane regiView = FXMLLoader.load(getClass().getResource("regi.fxml"));
+			rootLayout.setCenter(regiView);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

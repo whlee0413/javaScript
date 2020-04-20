@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MenuDAO {
 	
@@ -14,23 +15,18 @@ public class MenuDAO {
 	
 	
 	//동록
-	public void insert(EmpDO emp) {
+	public void insert(MenuDO menu) {
 		//1. connect(DB 연결)
 		try {
 			conn = DriverManager.getConnection(url, "hr", "hr");
 			//2. statement(SQL 구문 준비)
-			String sql = "insert into employees (employee_id, last_name, email, hire_date, job_id)"
-					+ "values (?,?,?,?,?)";
+			String sql = "insert into menu (food_name, food_type)"
+					+ "values (?,?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			//3. execute
-			pstmt.setString(1, emp.getEmployeeId());
-			pstmt.setString(2, emp.getLastName());
-			pstmt.setString(3, emp.getEmail());
-			pstmt.setString(4, emp.getHireDate());
-			pstmt.setString(5, emp.getJobId());
-			pstmt.executeUpdate();
-			
+			pstmt.setString(1, menu.getFoodName());
+			pstmt.setString(2, menu.getFoodKind());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -47,21 +43,17 @@ public class MenuDAO {
 		
 	}
 	
-	//수정
-	
-	//조회
-	
 	//삭제
-	public void delete(EmpDO emp) {
+	public void delete(MenuDO menu) {
 		//1. connect(DB 연결)
 		try {
 			conn = DriverManager.getConnection(url, "hr", "hr");
 			//2. statement(SQL 구문 준비)
-			String sql = "delete from employees  where employee_id=?";
+			String sql = "delete from menu  where food_name=?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			//3. execute
-			pstmt.setString(1, emp.getEmployeeId());
+			pstmt.setString(1, menu.getFoodName());
 			pstmt.executeUpdate();
 			
 			
@@ -78,28 +70,25 @@ public class MenuDAO {
 		
 	}
 	//단건조회
-	public EmpDO selectOne(EmpDO emp) { // 조회는 return값이 있어야함. void x
+	public MenuDO selectOne(MenuDO menu) { // 조회는 return값이 있어야함. void x
 
-		EmpDO empDO = new EmpDO();
+		MenuDO menuDO = new MenuDO();
 		try {
 			//1. connect(DB 연결)
 			conn = DriverManager.getConnection(url, "hr", "hr");
 			//2. statement(SQL 구문 준비)
-			String sql = "select * from employees  where employee_id=?";
+			String sql = "select * from menu  where food_name=?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			//3. execute
-			pstmt.setString(1, emp.getEmployeeId());
+			pstmt.setString(1, menu.getFoodName());
 			ResultSet rs = pstmt.executeQuery();
 
 			//4. 결과처리
 			//조회된 결과를 EmpDo에 담으면 됨.
 			if(rs.next()) { // 없는 값 조회를 피하기 위해서 if(rs.next())
-				empDO.setEmployeeId(rs.getString("EMPLOYEE_ID"));
-				empDO.setLastName(rs.getString("last_name"));
-				empDO.setJobId(rs.getString("job_id"));
-				empDO.setEmail(rs.getString("email"));
-				empDO.setHireDate(rs.getString("hire_date"));
+				menuDO.setFoodName(rs.getString("food_name"));
+				menuDO.setFoodKind(rs.getString("food_type"));
 				
 			}
 		} catch (SQLException e) {
@@ -112,7 +101,79 @@ public class MenuDAO {
 				e.printStackTrace();
 			}
 		}
-		return empDO;
+		return menuDO;
 	}
+	
+	//w전체조회
+	public ArrayList<MenuDO> selectAll() { // 조회는 return값이 있어야함. void x
+		ArrayList<MenuDO> list = new ArrayList<MenuDO>();
+		try {
+			//1. connect(DB 연결)
+			conn = DriverManager.getConnection(url, "hr", "hr");
+			//2. statement(SQL 구문 준비)
+			String sql = "select * from menu  order by food_name";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			//3. execute
+			ResultSet rs = pstmt.executeQuery();
+
+			//4. 결과처리
+			//조회된 결과를 EmpDo에 담으면 됨.
+			while(rs.next()) { 
+				MenuDO menuDO = new MenuDO();
+				menuDO.setFoodName(rs.getString("food_name"));
+				menuDO.setFoodKind(rs.getString("food_type"));
+				list.add(menuDO);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			//5. close(연결해제)
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	//랜덤
+	public MenuDO random(MenuDO men) { // 조회는 return값이 있어야함. void x
+
+        MenuDO menuDO = new MenuDO();
+        try {
+           //1. connect(DB 연결)
+           conn = DriverManager.getConnection(url, "hr", "hr");
+           //2. statement(SQL 구문 준비)
+           String sql = "select * from  (select * from menu where food_type = ? order by dbms_random.value) where rownum =1;";
+           PreparedStatement pstmt = conn.prepareStatement(sql);
+           
+           //3. execute
+           pstmt.setString(1, men.getFoodKind());
+           ResultSet rs = pstmt.executeQuery();
+
+           //4. 결과처리
+           //조회된 결과를 EmpDo에 담으면 됨.
+           if(rs.next()) { // 없는 값 조회를 피하기 위해서 if(rs.next())
+              menuDO.setFoodName(rs.getString("food_name"));
+              menuDO.setFoodKind(rs.getString("food_type"));
+              
+              
+           }
+        } catch (SQLException e) {
+           e.printStackTrace();
+        } finally {
+           //5. close(연결해제)
+           try {
+              conn.close();
+           } catch (SQLException e) {
+              e.printStackTrace();
+           }
+        }
+        return menuDO;
+     }
+	
 	
 }
