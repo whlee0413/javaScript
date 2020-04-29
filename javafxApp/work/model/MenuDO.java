@@ -2,24 +2,30 @@ package model;
 
 public class MenuDO {
 
-	private String foodName;
-	private String foodKind;
-	public String getFoodName() {
-		return foodName;
+	private String type;
+	private String name;
+	
+	
+	
+	
+	public String getName() {
+		return name;
 	}
-	public void setFoodName(String foodName) {
-		this.foodName = foodName;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getFoodKind() {
-		return foodKind;
+	public String getType() {
+		return type;
 	}
-	public void setFoodKind(String foodKind) {
-		this.foodKind = foodKind;
+	public void setType(String type) {
+		this.type = type;
 	}
+	
 	@Override
 	public String toString() {
-		return "MenuDO [foodName=" + foodName + ", foodKind=" + foodKind + "]";
+		return "MenuController [name=" + name + ", type=" + type + "]";
 	}
 	
 	
 }
+

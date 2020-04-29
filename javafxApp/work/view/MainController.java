@@ -8,72 +8,86 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable{
+
 	
-	@FXML BorderPane rootLayout;
-	@FXML MenuBar menubar;
+	@FXML Pane rootLayout;
 	
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-	}
+	@FXML Button regiBtn;
+	@FXML Button deleBtn;
+	@FXML Button allBtn;
+	@FXML Button randomBtn;
+	@FXML Button back;
+	
+	@FXML CheckBox jap;
+	@FXML CheckBox wes;
+	@FXML CheckBox chi;
 
 	@FXML
-	public void empView(ActionEvent event) {
+	public void pickView(ActionEvent event) { 
 		try {
-			BorderPane empView = FXMLLoader.load(getClass().getResource("pick.fxml"));
-			rootLayout.setCenter(empView);
+			Button pickView = FXMLLoader.load(getClass().getResource("pick.fxml"));
+			back.getScene(); // rootLayout = BorderPane의 센터에 끼워 넣는다
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public void allView(ActionEvent event) { 
+		try {
+			Pane allView = FXMLLoader.load(getClass().getResource("result.fxml"));
+			back.getScene();// rootLayout = BorderPane의 센터에 끼워 넣는다
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	@FXML
 	public void regiView(ActionEvent event) {
 		try {
-			BorderPane regiView = FXMLLoader.load(getClass().getResource("regi.fxml"));
-			rootLayout.setCenter(regiView);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@FXML
-	public void deptView(ActionEvent event) {
-		try {
-			BorderPane deptView = FXMLLoader.load(getClass().getResource("dept.fxml"));
-			rootLayout.setCenter(deptView);
+			Pane regiView = FXMLLoader.load(getClass().getResource("regi.fxml"));
+			regiBtn.getScene();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
 
 	@FXML
-	public void loginView(ActionEvent event) {
+	public void deleteView(ActionEvent event) {
 		try {
-			AnchorPane loginView = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
-			Stage primaryStage = (Stage) menubar.getScene().getWindow();
+			Pane deleteView = FXMLLoader.load(getClass().getResource("Delete.fxml"));
+			Stage primaryStage = (Stage) deleBtn.getScene().getWindow();
 
-			Stage dialog = new Stage(StageStyle.UTILITY);
-			dialog.initModality(Modality.WINDOW_MODAL);
+			Stage dialog = new Stage(StageStyle.UTILITY); //dialog 다른 창 구현
+			dialog.initModality(Modality.WINDOW_MODAL); //Modality 원래창 못움직이게 막음
 			dialog.initOwner(primaryStage);
-			dialog.setTitle("로그인");
+			dialog.setTitle("메뉴 삭제");
 
-			Scene scene = new Scene(loginView);
+			Scene scene = new Scene(deleteView);
 			dialog.setScene(scene);
 			dialog.setResizable(false);
-			dialog.show();
+			dialog.show(); //보이게 하는 부
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+
+
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
